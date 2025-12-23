@@ -132,14 +132,14 @@ app.post('/login', async (req, res) => {
 });
 
 // Logout
-app.get('/logout', (req, res) => {
+app.post('/logout', (req, res) => {
   res.clearCookie("token");
   res.clearCookie("email");
   res.json({ message: "Logged out" });
 });
 
 // Check login status
-app.get('/read', (req, res) => {
+app.post('/read', (req, res) => {
   const token = req.cookies.token;
   if (!token) return res.json({ bool: false });
 

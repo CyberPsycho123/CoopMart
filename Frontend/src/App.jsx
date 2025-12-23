@@ -33,7 +33,7 @@ function App() {
   useEffect(() => {
     async function tool() {
       try {
-        let response = await fetch("https://coopmart-backend.onrender.com/", {
+        let response = await fetch("https://coopmart-backend.onrender.com", {
           method: "POST"
         });
         let data = await response.json();

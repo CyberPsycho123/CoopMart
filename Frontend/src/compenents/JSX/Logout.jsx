@@ -6,7 +6,7 @@ const Logout = () => {
     useEffect(() => {
         const logout = async () => {
             const res = await fetch("https://coopmart-backend.onrender.com/logout", {
-                method: "GET",
+                method: "POST",
                 credentials: "include"
             });
 

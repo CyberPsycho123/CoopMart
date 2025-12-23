@@ -10,7 +10,7 @@ const Shop = ({ Tshirts, Shirts, shoes, electronics }) => {
     async function checkLogin() {
       try {
         const response = await fetch("https://coopmart-backend.onrender.com/read", {
-          method: "GET",
+          method: "POST",
           credentials: "include",
         });
         const data = await response.json();
