@@ -1,0 +1,101 @@
+/* Container and card */
+.confirm-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f5f6fa;
+  /* Soft neutral background */
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  padding: 20px;
+}
+
+.confirm-card {
+  background: #ffffff;
+  padding: 40px 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  max-width: 450px;
+  width: 100%;
+  animation: fadeIn 0.6s ease-in-out;
+  border: 1px solid #e0e0e0;
+}
+
+/* Title */
+.confirm-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 25px;
+}
+
+/* Delivery details list */
+.detail-group {
+  display: flex;
+  justify-content: space-between;
+  margin: 12px 0;
+
+  font-size: 15px;
+  color: #4b4b4b;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
+
+.detail-group-title{
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Edit button – small and subtle, placed inline */
+.edit-btn {
+  background: transparent;
+  color: #2c3e50;
+  border: 1px solid #2c3e50;
+  padding: 5px 14px;
+  /* smaller padding */
+  font-size: 13px;
+  /* smaller text */
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+.edit-btn:hover {
+  background: #2c3e50;
+  color: #ffffff;
+}
+
+/* Confirm button – full width at bottom */
+.confirm-btn {
+  background: #0066ff;
+  color: #ffffff;
+  border: 1.5px solid #0066ff;
+  padding: 12px 0;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 25px;
+  transition: all 0.3s ease;
+}
+
+.confirm-btn:hover {
+  background: #0043a8;
+  border-color: #0043a8;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

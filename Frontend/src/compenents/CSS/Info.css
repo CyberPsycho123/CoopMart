@@ -1,0 +1,127 @@
+/* Page Container */
+.delivery-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f4f7fb;
+  padding: 20px;
+}
+
+/* Form Style */
+.delivery-form {
+  width: 100%;
+  max-width: 600px;
+  background: #fff;
+  padding: 30px 35px;
+  border-radius: 15px;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.1);
+  animation: fadeIn 0.5s ease forwards;
+}
+
+/* Title */
+.form-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 26px;
+  color: #333;
+  font-weight: 700;
+}
+
+/* Input Group */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.input-group label {
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #444;
+}
+
+/* Input Fields */
+.input-group input,
+.input-group textarea {
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: #fafafa;
+  font-size: 15px;
+  transition: 0.2s;
+}
+
+.input-group input:focus,
+.input-group textarea:focus {
+  outline: none;
+  border-color: #6a5acd;
+  background: #fff;
+  box-shadow: 0 0 4px rgba(106, 90, 205, 0.4);
+}
+
+/* Two-column row */
+.input-row {
+  display: flex;
+  gap: 15px;
+}
+
+/* Textarea */
+.input-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* Submit Button */
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  background-color: #0066ff;
+  color: #fff;
+  font-size: 17px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.25s;
+  margin-top: 10px;
+}
+
+.submit-btn:hover {
+  background-color: #0051ca;
+  transform: translateY(-2px);
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media(max-width: 600px) {
+  .input-row {
+    flex-direction: column;
+  }
+}
+
+
+#makerror{
+  color: red;
+  margin-top: -12px;
+  word-break: break-all;
+  height: 25px;
+  font-size: 12px;
+}
+.error {
+  color: red;
+  margin-top: 4px;
+  word-break: break-word;
+  font-size: 12px;
+  min-height: 18px; /* keeps spacing consistent even if no error */
+}

@@ -1,0 +1,186 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #eef2f7;
+  font-family: "Poppins", sans-serif;
+  overflow-x: hidden;
+}
+
+h1{
+  font-family: sans-serif;
+}
+
+/* FULL SCREEN HERO */
+.hero-section {
+  position: relative;
+  width: 100%;
+  height: 100vh; 
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding-left: 80px;
+  transition: 0.4s ease;
+}
+
+/* Subtle hover effect over entire hero */
+.hero-section:hover {
+  filter: brightness(1.03);
+  transform: scale(1.003);
+}
+
+/* Background gradient */
+.hero-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #1dc2ff, #7b28f0);
+  opacity: 0.92;
+  z-index: 1;
+  transition: 0.8s ease;
+}
+
+/* Slight interactive gradient movement */
+.hero-section:hover .hero-gradient {
+  opacity: 1;
+}
+
+/* White Curve Shape */
+.hero-curve {
+  position: absolute;
+  top: -220px;
+  left: -200px;
+  width: 650px;
+  height: 650px;
+  background: white;
+  border-radius: 50%;
+  z-index: 2;
+  filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.1));
+  transition: transform 0.6s ease;
+}
+
+/* Curve hover animation */
+.hero-section:hover .hero-curve {
+  transform: translateY(-10px) scale(1.03);
+}
+
+/* TEXT */
+.hero-text {
+  position: relative;
+  z-index: 3;
+  max-width: 540px;
+  color: #000;
+  opacity: 0;
+  animation: fadeUp 1s forwards;
+}
+
+/* Small subtitle - more professional */
+.hero-text h4 {
+  font-size: 0.8rem;
+  letter-spacing: 4px;
+  font-weight: 500;
+  margin-bottom: 14px;
+  opacity: 0.65;
+  text-transform: uppercase;
+}
+
+/* Big Title - polished */
+.hero-text h1 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 30px;
+  letter-spacing: -1px;
+  background: linear-gradient(90deg, #000, #2c2c2c);
+  -webkit-background-clip: text;
+  color: transparent;
+  transition: 0.4s ease;
+}
+
+/* Title hover glow */
+.hero-section:hover h1 {
+  letter-spacing: 0px;
+  filter: drop-shadow(0 3px 8px rgba(255,255,255,0.2));
+}
+
+/* BUTTON */
+.primary-btn {
+  padding: 14px 34px;
+  background: #111;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.4s ease;
+  box-shadow: 0px 5px 15px rgba(0,0,0,0.2);
+  margin-left:5px ;
+}
+#signed{
+  background-color: white;
+  color: black;
+}
+#signed:hover{
+  color: white;
+  background-color: black;
+}
+
+/* Professional hover interaction */
+.primary-btn:hover {
+  background: #fff;
+  color: #111;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.25);
+}
+
+/* BUTTON ripple effect */
+.primary-btn:active {
+  transform: scale(0.96);
+}
+
+/* PROFESSIONAL ANIMATIONS */
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .hero-section {
+    padding-left: 40px;
+  }
+
+  .hero-text h1 {
+    font-size: 2.2rem;
+  }
+
+  .hero-curve {
+    left: -260px;
+    width: 520px;
+    height: 520px;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-section {
+    padding-left: 25px;
+  }
+
+  .hero-text h1 {
+    font-size: 1.7rem;
+  }
+
+  .hero-curve {
+    left: -300px;
+  }
+}
