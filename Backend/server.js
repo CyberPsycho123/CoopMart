@@ -56,7 +56,7 @@ app.use(cors({
   methods: ["GET", "POST"]
 }));
 
-app.options("*", cors());
+app.options("/*", cors());
 
 app.use(express.json());
 app.use(cookieParser());
