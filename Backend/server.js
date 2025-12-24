@@ -81,6 +81,11 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok" });
+});
+
+
 app.post('/sell', upload.single("image"), async (req, res) => {
   const email = req.cookies.email;
   if (!email) return res.status(401).json({ success: false });

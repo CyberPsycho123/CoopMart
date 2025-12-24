@@ -8,19 +8,17 @@ const Shop = ({ Tshirts, Shirts, shoes, electronics }) => {
 
   useEffect(() => {
     async function checkLogin() {
-      try {
-        const response = await fetch("https://coopmart-backend.onrender.com/read", {
-          method: "POST",
-          credentials: "include",
-        });
-        const data = await response.json();
+      const response = await fetch("https://coopmart-backend.onrender.com/read", {
+        method: "POST",
+        credentials: "include",
+      });
+      const data = await response.json();
 
-        if (!data.bool) {
-          navigate("/login", { replace: true });
-        }
-      } catch (error) {
-        console.error("Login check failed:", error);
-        navigate("/login", { replace: true });
+      if (data.bool == true) {
+        navigate("/shop")
+      }
+      else{
+        navigate("/login")
       }
     }
 

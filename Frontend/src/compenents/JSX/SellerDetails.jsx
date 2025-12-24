@@ -1,7 +1,6 @@
 import "../CSS/SellerDetails.css";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
 
 function SellerDetails() {
   const navigate = useNavigate()
@@ -11,36 +10,6 @@ function SellerDetails() {
     watch,
     formState: { errors },
   } = useForm()
-
-  const validate_seller = async() => {
-    const res = await fetch("https://coopmart-backend.onrender.com/validateseller", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-    });
-    const responsed=await res.json()
-    if (responsed.email_sucess == true){
-      if (responsed.success == true){
-        navigate("/seller")
-      }
-      else{
-        navigate("/sellerdetails")
-      }
-    }
-    else{
-      navigate("/login")
-    }
-  }
-
-  useEffect(() => {
-    async function validate(){
-      await validate_seller()
-    }
-    validate()
-    
-  }, [])
-  
-
   const onsubmit = async (form) => {
     const res = await fetch("https://coopmart-backend.onrender.com/sellerdetails", {
       method: "POST",

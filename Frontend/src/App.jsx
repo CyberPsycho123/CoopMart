@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import './App.css'
 import About from './compenents/JSX/About'
 import Navbar from './compenents/JSX/Navbar'
 import Carts from './compenents/JSX/Carts'
@@ -14,7 +15,7 @@ import Selleradmin from './compenents/JSX/Selleradmin'
 import Seller from './compenents/JSX/Seller'
 import Info from './compenents/JSX/Info'
 import Logout from './compenents/JSX/Logout'
-import { createBrowserRouter,RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Footer from './compenents/JSX/Footeer'
 import Order from './compenents/JSX/Order'
 import Confirm from './compenents/JSX/Confirm'
@@ -29,74 +30,104 @@ function App() {
   const [Tshirts, setTshirts] = useState([]);
   const [Shirts, setShirts] = useState([]);
   const [counter, setcount] = useState(0);
+  const [loading, setload] = useState(true)
+
+  async function tool() {
+
+    let response = await fetch("http://localhost:3000/", {
+      method: "POST"
+    });
+    let data = await response.json();
+    const tshirtsArr = [];
+    const shirtsArr = [];
+    const shoesArr = [];
+    const electronicsArr = [];
+
+    data.forEach(item => {
+      if (item.catagory === "T-shirt") tshirtsArr.push(item);
+      if (item.catagory === "Shirt") shirtsArr.push(item);
+      if (item.catagory === "Electronics") electronicsArr.push(item);
+      if (item.catagory === "Shoes") shoesArr.push(item);
+    });
+
+    setTshirts(tshirtsArr);
+    setShirts(shirtsArr);
+    setShoes(shoesArr);
+    setElectronics(electronicsArr);
+
+  }
+
+  function Layout({ children, loading }) {
+    return (
+      <>
+        <Navbar />
+        {loading ? (
+          <div className='container' style={{ height: '80vh' }}>
+            <div className="spinner"></div>
+            <p>Waiting for server...</p>
+          </div>
+        ) : (
+          <main>{children}</main>
+        )}
+        <Footer />
+      </>
+    )
+  }
 
   useEffect(() => {
-    async function tool() {
+    const interval = setInterval(async () => {
       try {
-        let response = await fetch("https://coopmart-backend.onrender.com", {
-          method: "POST"
-        });
-        let data = await response.json();
+        const res = await fetch("https://coopmart-backend.onrender.com/health", { method: "GET" });
+        if (res.ok) {
+          setload(false)
+          await tool();
+          clearInterval(interval);
+        }
+      } catch { }
+    }, 2000);
 
-        const tshirtsArr = [];
-        const shirtsArr = [];
-        const shoesArr = [];
-        const electronicsArr = [];
-
-        data.forEach(item => {
-          if (item.catagory === "T-shirt") tshirtsArr.push(item);
-          if (item.catagory === "Shirt") shirtsArr.push(item);
-          if (item.catagory === "Electronics") electronicsArr.push(item);
-          if (item.catagory === "Shoes") shoesArr.push(item);
-        });
-
-        setTshirts(tshirtsArr);
-        setShirts(shirtsArr);
-        setShoes(shoesArr);
-        setElectronics(electronicsArr);
-      } catch (error) {
-        console.error("Failed to load products:", error);
-      }
-    }
-
-    tool();
+    return () => {
+      clearInterval(interval)
+    };
   }, []);
+
+
   const Router = createBrowserRouter([
     {
       path: "/",
-      element: <><Navbar /><Home /><Footer /></>
+      element: <Layout loading={loading}><Home /></Layout>
     },
     {
       path: "/shop",
-      element: <><Navbar /><Shop Tshirts={Tshirts} Shirts={Shirts} shoes={shoes} electronics={electronics} /><Footer /></>
+      element: <Layout loading={loading}><Shop Tshirts={Tshirts} Shirts={Shirts} shoes={shoes} electronics={electronics} /></Layout>
     },
     {
       path: "/about",
-      element: <><Navbar /><About /><Footer /></>
+      element: <Layout loading={loading}><About /></Layout>
     },
     {
       path: "/cart",
-      element: <><Navbar /><Carts /><Footer /></>
+      element: <Layout loading={loading}><Carts /></Layout>
     },
     {
       path: "/login",
-      element: <><Navbar /><Login /><Footer /></>
+      element: <Layout loading={loading}><Login /></Layout>
     },
     {
       path: "/Signup",
-      element: <><Navbar /><Signup /><Footer /></>
+      element: <Layout loading={loading}><Signup /></Layout>
     },
     {
       path: "/order/:catagory/:orderitem",
-      element: <><Navbar /><Order Tshirts={Tshirts} Shirts={Shirts} shoes={shoes} electronics={electronics} /><Footer /></>
+      element: <Layout loading={loading}><Order Tshirts={Tshirts} Shirts={Shirts} shoes={shoes} electronics={electronics} /></Layout>
     },
     {
       path: "/ordered",
-      element: <><Navbar /><Ordered /><Footer /></>
+      element: <Layout loading={loading}><Ordered /></Layout>
     },
     {
       path: "/payment",
-      element: <><Navbar /><Payment /><Footer /></>
+      element: <Layout loading={loading}><Payment /></Layout>
     },
     {
       path: "/logout",
@@ -104,11 +135,11 @@ function App() {
     },
     {
       path: "/info",
-      element: <><Navbar /><Info /><Footer /></>
+      element: <Layout loading={loading}><Info /></Layout>
     },
     {
       path: '/confirm',
-      element: <><Navbar /><Confirm /><Footer /></>
+      element: <Layout loading={loading}><Confirm /></Layout>
     },
     {
       path: "/confirmed",
@@ -116,27 +147,27 @@ function App() {
     },
     {
       path: "/edit",
-      element: <><Navbar /><Edit /><Footer /></>
+      element: <Layout loading={loading}><Edit /></Layout>
     },
     {
       path: "/seller",
-      element: <><Navbar /><Seller /><Footer /></>
+      element: <Layout loading={loading}><Seller /></Layout>
     },
     {
-      path:"/sellerstart",
-      element:<><Navbar/><SellerStart/><Footer/></>
+      path: "/sellerstart",
+      element: <Layout loading={loading}><SellerStart /></Layout>
     },
     {
-      path:"/sellerdetails",
-      element:<><Navbar/><SellerDetails/><Footer/></>
+      path: "/sellerdetails",
+      element: <Layout loading={loading}><SellerDetails /></Layout>
     },
     {
-      path:"/sellerterms",
-      element:<><Navbar/><SellerTerms/><Footer/></>
+      path: "/sellerterms",
+      element: <Layout loading={loading}><SellerTerms /></Layout>
     },
     {
-      path:"/selleradmin",
-      element:<><Navbar/><Selleradmin/><Footer/></>
+      path: "/selleradmin",
+      element: <Layout loading={loading}><Selleradmin /></Layout>
     }
   ])
   return (

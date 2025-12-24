@@ -6,56 +6,34 @@
 }
 
 
-
-/* Animated Gradient Background */
 .terms-page {
   min-height: 200vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(120deg, #667eea, #764ba2, #ff6a88, #fbc2eb);
+   background: linear-gradient(
+    120deg,
+    #667eea,
+    #764ba2,
+    #ff6a88,
+    #fbc2eb
+  );
   background-size: 400% 400%;
-  animation: gradientMove 12s ease infinite;
 }
 
-@keyframes gradientMove {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
 
-/* Glass Card with more padding */
 .terms-card {
   width: 100%;
   max-width: 850px;
-  background: rgba(255, 255, 255, 0.15);
+  background-color: white;
   backdrop-filter: blur(18px);
-
-  padding: 60px 60px 70px 60px; /* increased padding */
+  padding: 60px 60px 70px 60px;
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.45);
-  animation: fadeInUp 1.2s ease forwards;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 /* Title */
 .terms-title {
-  color: #fff;
+  color: black;
   font-size: 2.4rem;
   font-weight: 700;
   text-decoration: underline;
@@ -65,7 +43,7 @@
 
 /* Content */
 .terms-content {
-  color: rgba(255, 255, 255, 0.95);
+  color: black;
   font-size: 1rem;
   line-height: 1.8;
 }
@@ -73,7 +51,7 @@
 .terms-content h3 {
   margin-top: 25px;
   margin-bottom: 10px;
-  color: #ffd86f;
+  color: black;
   font-size: 1.1rem;
 }
 
@@ -91,7 +69,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  color: #fff;
+  color: black;
   font-size: 0.95rem;
 }
 
@@ -110,8 +88,8 @@
 
   font-weight: 600;
   cursor: pointer;
-  background: linear-gradient(135deg, #ffd86f, #ff9a9e);
-  color: #333;
+  background: #007bff;
+  color: white;
   transition: all 0.3s ease;
 }
 
