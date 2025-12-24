@@ -34,7 +34,7 @@ function App() {
 
   async function tool() {
 
-    let response = await fetch("http://localhost:3000/", {
+    let response = await fetch("https://coopmart-backend.onrender.com", {
       method: "POST"
     });
     let data = await response.json();
