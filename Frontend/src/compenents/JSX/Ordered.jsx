@@ -7,7 +7,7 @@ const Ordered = () => {
   const [orders,setorder] = useState([])
   useEffect(() => {
     async function read() {
-      let reading = await fetch("https://coopmart-backend.onrender.com/read", { method: "GET", credentials: "include" })
+      let reading = await fetch("https://coopmart-backend.onrender.com/read", { method: "POST", credentials: "include" })
       let reads = await reading.json()
       if (reads.bool == true) {
         navigate("/ordered")
