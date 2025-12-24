@@ -44,7 +44,7 @@ const __dirname = path.dirname(__filename);
 const secretKey = process.env.JWT_SECRET;
 
 const app = express();
-app.use("/images", express.static(path.join(__dirname, "public/images")));
+
 const port = process.env.PORT || 3000;
 
 // Middleware
