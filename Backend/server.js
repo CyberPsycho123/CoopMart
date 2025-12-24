@@ -49,12 +49,10 @@ const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors({
-  origin: [
-    "https://coopmart-frontend.onrender.com"
-  ],
-  credentials: true,
-  methods: ["GET", "POST"]
+  origin: "https://coopmart-frontend.onrender.com",
+  credentials: true
 }));
+
 
 app.options("/*", cors());
 
