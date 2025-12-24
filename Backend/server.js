@@ -48,7 +48,16 @@ app.use("/images", express.static(path.join(__dirname, "public/images")));
 const port = process.env.PORT || 3000;
 
 // Middleware
-app.use(cors({ origin: "https://coopmart-frontend.onrender.com", credentials: true }));
+app.use(cors({
+  origin: [
+    "https://coopmart-frontend.onrender.com"
+  ],
+  credentials: true,
+  methods: ["GET", "POST"]
+}));
+
+app.options("*", cors());
+
 app.use(express.json());
 app.use(cookieParser());
 
@@ -60,7 +69,7 @@ async function Items() {
     catagory: item.catagory,
     title: item.title,
     desc: item.desc,
-    image: item.image, 
+    image: item.image,
     price: item.price
   }));
 }
@@ -101,10 +110,10 @@ app.post('/sell', upload.single("image"), async (req, res) => {
 
 // User registration
 app.post('/create', (req, res) => {
-  let { username, email, password} = req.body;
+  let { username, email, password } = req.body;
   bcrypt.genSalt(10, (err, salt) => {
     bcrypt.hash(password, salt, async (err, hash) => {
-      let created_user = await User.create({ username, email, password: hash});
+      let created_user = await User.create({ username, email, password: hash });
       let token = jwt.sign({ email }, secretKey, { expiresIn: '7d' });
       res.cookie("email", email, { maxAge: 1000 * 60 * 60 * 24 * 7, httpOnly: true, secure: true, sameSite: "none" });
       res.cookie("token", token, { maxAge: 1000 * 60 * 60 * 24 * 7, httpOnly: true, secure: true, sameSite: "none" });
@@ -133,8 +142,15 @@ app.post('/login', async (req, res) => {
 
 // Logout
 app.post('/logout', (req, res) => {
-  res.clearCookie("token");
-  res.clearCookie("email");
+  res.clearCookie("token", {
+    secure: true,
+    sameSite: "none"
+  });
+  res.clearCookie("email", {
+    secure: true,
+    sameSite: "none"
+  });
+
   res.json({ message: "Logged out" });
 });
 
@@ -352,7 +368,7 @@ app.post('/deleteitem', async (req, res) => {
   if (!item) return res.json({ success: false });
 
   const filePath = path.join(__dirname, "public", item.image);
-  fs.unlink(filePath, () => {}); // safe delete
+  fs.unlink(filePath, () => { }); // safe delete
 
   await Outfit.deleteOne({ _id: id });
   res.json({ success: true });
