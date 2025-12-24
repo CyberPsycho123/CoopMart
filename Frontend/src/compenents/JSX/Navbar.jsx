@@ -41,7 +41,7 @@ const Navbar = () => {
           <li onClick={() => navigate('/ordered')}>Ordered</li>
           <li onClick={() => navigate('/about')}>About Us</li>
           <li onClick={() => navigate('/cart')} >Cart({Counter.counter})</li>
-          <li onClick={() => navigate('/sellerdetails')}>Seller</li>
+          <li onClick={() => navigate('/sellerstart')}>Seller</li>
           <li onClick={() => navigate('/logout')}>Logout</li>
         </ul>
       </aside>
