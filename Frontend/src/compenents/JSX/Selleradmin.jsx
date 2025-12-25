@@ -12,16 +12,25 @@ const Selleradmin = () => {
 
 
   const delete_item = async (item) => {
-    const res = await fetch("https://coopmart-backend.onrender.com/deleteitem", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: item._id }),
-      credentials: "include"
-    })
-    const data = await res.json()
-    if (data.success == true) {
-      navigate(0)
+    let executed=false
+    if (executed){
+      return
     }
+    const interval = setInterval(async() => {
+      const res = await fetch("https://coopmart-backend.onrender.com/deleteitem", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: item._id }),
+        credentials: "include"
+      })
+      const data = await res.json()
+      if (data.success == true) {
+        executed=true
+        admin_seller()
+        clearInterval(interval)
+      }
+    }, 300);
+
 
   }
 
@@ -62,9 +71,9 @@ const Selleradmin = () => {
   };
 
   async function check(item) {
-    let executed=false
-    if (executed){return}
-    const interval = setInterval(async() => {
+    let executed = false
+    if (executed) { return }
+    const interval = setInterval(async () => {
       const res = await fetch("https://coopmart-backend.onrender.com/checking", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -73,7 +82,7 @@ const Selleradmin = () => {
       })
       const data = await res.json()
       if (data.success == true) {
-        executed=true
+        executed = true
         admin_seller()
         clearInterval(interval)
       }

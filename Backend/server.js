@@ -3,7 +3,6 @@ import fs from 'fs';
 import path from 'path';
 import cors from 'cors';
 import jwt from 'jsonwebtoken';
-import multer from 'multer';
 import bcrypt from 'bcrypt';
 import { Cart } from './models/cart.js';
 import { fileURLToPath } from 'url';
@@ -15,10 +14,19 @@ import { Delivary } from './models/delivary.js';
 import cookieParser from 'cookie-parser';
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import { v2 as cloudinary } from 'cloudinary';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import multer from 'multer';
 
 dotenv.config();
 
 const DB_URL = process.env.ATLAS_URL;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret:process.env.API_SECERET
+})
 
 
 if (!DB_URL) {
@@ -40,7 +48,6 @@ connectDB();
 
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 const secretKey = process.env.JWT_SECRET;
 
 const app = express();
@@ -70,16 +77,15 @@ async function Items() {
 }
 
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "public/images"));
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: '25thdec2025',
+    public_id: (req, file) => file.fieldname + '-' + Date.now(),
   },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
-  }
 });
 
-const upload = multer({ storage });
+const upload = multer({ storage: storage });
 
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok" });
@@ -92,7 +98,7 @@ app.post('/sell', upload.single("image"), async (req, res) => {
 
   const { title, desc, price, catagory } = req.body;
 
-  const imageUrl = `/images/${req.file.filename}`;
+  const imageUrl = req.file.path;
 
   const outfit = new Outfit({
     image: imageUrl,
@@ -367,13 +373,10 @@ app.post('/deleteitem', async (req, res) => {
   const item = await Outfit.findById(id);
   if (!item) return res.json({ success: false });
 
-  const filePath = path.join(__dirname, "public", item.image);
-  fs.unlink(filePath, () => { }); // safe delete
 
   await Outfit.deleteOne({ _id: id });
   res.json({ success: true });
 });
-
 
 // Start server
 app.listen(port, () => {
