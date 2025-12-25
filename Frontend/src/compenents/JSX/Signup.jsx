@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import "../CSS/Signup.css";
 
 export default function Signup() {
+  const navigate=useNavigate()
   const {
     register,
     handleSubmit,
@@ -34,7 +35,7 @@ export default function Signup() {
     }
     else{
       await delay(2)
-      alert("Account created!");
+      navigate('/login')
     }
   }
 
@@ -80,7 +81,7 @@ export default function Signup() {
           </div>
           {errors.confirmpass && <div id="makerror">{errors.confirmpass.message}</div>}
 
-          <button disabled={isSubmitting} className="signup-btn">Sign Up</button>
+          <button disabled={isSubmitting} className="signup-btn">{isSubmitting ? "creating" : "create"}</button>
           <p className="login-text">
             Already have an account? <Link to="/login">Login</Link>
           </p>
