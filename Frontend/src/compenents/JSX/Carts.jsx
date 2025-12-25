@@ -1,44 +1,55 @@
 import { useNavigate } from "react-router-dom";
 import "../CSS/Carts.css";
-import { useEffect, useState,useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { CounterContext } from "../../Context/context";
 export default function Carts() {
   const navigate = useNavigate();
-  const value=useContext(CounterContext)
+  const value = useContext(CounterContext)
   const [Cart_items, setcart] = useState([])
   const [Cart_price, setprice] = useState(0)
   const [len, setlen] = useState(0)
   const [reloads, setload] = useState(0)
 
-  if (reloads == 0){
+  if (reloads == 0) {
     navigate(0)
     setload(1)
   }
 
-  async function Remove(index) {
-    let item = await fetch("https://coopmart-backend.onrender.com/delcart",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ index })
-      })
-    let items=await item.json()
-    value.setcount(value.counter-1)
-    if (items.success === true){
-      navigate(0)
-    }
+  function Remove(index) {
+    let executed=false
+
+    if (executed){return}
+
+    const interval = setInterval(async () => {
+      let item = await fetch("https://coopmart-backend.onrender.com/delcart",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ index })
+        })
+      let items = await item.json()
+      if (items.success === true) {
+        executed=true
+        value.setcount(value.counter - 1)
+        clearInterval(interval)
+      }
+    },300)
+
   }
 
   async function Checkout() {
-    const res=await fetch("https://coopmart-backend.onrender.com/check",{
-      method:"POST",
+    if(value.counter == 0){
+      return
+    }
+    const res = await fetch("https://coopmart-backend.onrender.com/check", {
+      method: "POST",
       headers: { "Content-Type": "application/json" },
-      credentials:"include",
-      body:JSON.stringify({Cart_price})
+      credentials: "include",
+      body: JSON.stringify({ Cart_price })
     })
-    const response=await res.json()
-    if (response.success == true){
+    const response = await res.json()
+    if (response.success == true) {
       navigate('/info')
     }
 
@@ -73,7 +84,7 @@ export default function Carts() {
 
         <div className="cart-left">
           <h2 className="cart-title">Shopping Cart</h2>
-          <br/>
+          <br />
           <span className="items-count">{len} Items</span>
 
           <div className="cart-items">
@@ -87,7 +98,7 @@ export default function Carts() {
                   </div>
 
                   <div className="qty">
-                    <span style={{padding:'3px',textAlign:'center',border:'1px solid black',width:'60px'}}>{items.quantity}</span>
+                    <span style={{ padding: '3px', textAlign: 'center', border: '1px solid black', width: '60px' }}>{items.quantity}</span>
                   </div>
 
                   <div className="price">₹{items.price}</div>
@@ -102,7 +113,7 @@ export default function Carts() {
 
         {/* RIGHT — PAYMENT SUMMARY */}
         <div className="cart-right">
-          <br/>
+          <br />
           <h3>Order Summary</h3>
           <br />
           <div className="summary-row total-row">

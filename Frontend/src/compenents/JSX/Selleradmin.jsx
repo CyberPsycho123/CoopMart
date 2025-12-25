@@ -9,19 +9,7 @@ const Selleradmin = () => {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
-  async function check(item) {
-    console.log(item)
-    const res = await fetch("https://coopmart-backend.onrender.com/checking", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: item._id }),
-      credentials: "include"
-    })
-    const data = await res.json()
-    if (data.success == true) {
-      navigate(0)
-    }
-  }
+
 
   const delete_item = async (item) => {
     const res = await fetch("https://coopmart-backend.onrender.com/deleteitem", {
@@ -30,8 +18,8 @@ const Selleradmin = () => {
       body: JSON.stringify({ id: item._id }),
       credentials: "include"
     })
-    const data=await res.json()
-    if (data.success == true){
+    const data = await res.json()
+    if (data.success == true) {
       navigate(0)
     }
 
@@ -73,6 +61,26 @@ const Selleradmin = () => {
     }
   };
 
+  async function check(item) {
+    let executed=false
+    if (executed){return}
+    const interval = setInterval(async() => {
+      const res = await fetch("https://coopmart-backend.onrender.com/checking", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: item._id }),
+        credentials: "include"
+      })
+      const data = await res.json()
+      if (data.success == true) {
+        executed=true
+        admin_seller()
+        clearInterval(interval)
+      }
+    }, 300)
+
+  }
+
   useEffect(() => {
     validate_seller();
     admin_seller();
@@ -85,7 +93,7 @@ const Selleradmin = () => {
   return (
     <div className="shop-container">
       {/* 🔍 Search Bar */}
-      
+
       <div className="bar">
         <input
           type="text"
@@ -99,14 +107,14 @@ const Selleradmin = () => {
       {/* 🟦 PRODUCT CARDS */}
       <section className="category-section">
         {searching.length > 0 && <h2>Your Items</h2>}
-        {proditems.length<1 && <div className='space'></div>}
+        {proditems.length < 1 && <div className='space'></div>}
         <div className="product-grid">
           {searching.map((item, index) => (
             <div key={index} className="product-card">
               <img src={item.image} alt={item.title} />
               <h3 className="left">{item.title}</h3>
               <p className="left">₹{item.price}</p>
-              <button className="buy-btn" onClick={async ()=> await delete_item(item)}>Delete</button>
+              <button className="buy-btn" onClick={async () => await delete_item(item)}>Delete</button>
             </div>
           ))}
         </div>

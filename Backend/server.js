@@ -348,9 +348,9 @@ app.post('/selleradmin', async (req, res) => {
   const items = [];
   for (let i = 0; i < find_items.length; i++) {
     const prod_items = await Delivary.find({ prod_title: find_items[i].title, email });
-    if (prod_items) items.push(prod_items);
+    if (prod_items) items.push(...prod_items);
   }
-  const new_items = items[0];
+  const new_items = items;
   res.json({ items: new_items, success: true, seller_items: find_items });
 });
 
