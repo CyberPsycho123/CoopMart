@@ -52,7 +52,7 @@ const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors({
-  origin: "https://coopmart-frontend.onrender.com",
+  origin: "https://coopmart-fawn.vercel.app",
   credentials: true
 }));
 
