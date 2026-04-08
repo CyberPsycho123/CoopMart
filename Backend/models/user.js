@@ -8,8 +8,7 @@ const blogSchema = new Schema({
     unique: true,   
     required: true,   
     trim: true
-  },
-  password: String,
+  }
 });
 
 export const User = mongoose.model('user', blogSchema)

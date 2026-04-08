@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import "../CSS/Info.css"
+import config from "../../config";
 
 const Info = () => {
   const navigate = useNavigate()
@@ -14,7 +15,7 @@ const Info = () => {
 
   const onsubmit = async (form) => {
     alert("Delivery details submitted successfully!");
-    const res = await fetch("https://coopmart-backend.onrender.com/info", {
+    const res = await fetch(`${config.API_BASE_URL}/info`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -29,7 +30,7 @@ const Info = () => {
 
   useEffect(() => {
     async function rev() {
-      const recive = await fetch("https://coopmart-backend.onrender.com/readdetail",
+      const recive = await fetch(`${config.API_BASE_URL}/readdetail`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

@@ -1,11 +1,12 @@
 import "../CSS/SellerStart.css"
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import config from "../../config";
 
 function SellerStart() {
   const navigate = useNavigate()
   const validate_seller = async () => {
-    const res = await fetch("https://coopmart-backend.onrender.com/validateseller", {
+    const res = await fetch(`${config.API_BASE_URL}/validateseller`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",

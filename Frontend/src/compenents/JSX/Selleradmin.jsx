@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../CSS/shop.css';
 import '../CSS/sellerTable.css';
+import config from '../../config';
 
 const Selleradmin = () => {
   const [items, setitems] = useState([]);
@@ -17,7 +18,7 @@ const Selleradmin = () => {
       return
     }
     const interval = setInterval(async() => {
-      const res = await fetch("https://coopmart-backend.onrender.com/deleteitem", {
+      const res = await fetch(`${config.API_BASE_URL}/deleteitem`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: item._id }),
@@ -36,7 +37,7 @@ const Selleradmin = () => {
 
 
   const validate_seller = async () => {
-    const res = await fetch("https://coopmart-backend.onrender.com/validateseller", {
+    const res = await fetch(`${config.API_BASE_URL}/validateseller`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -56,7 +57,7 @@ const Selleradmin = () => {
   };
 
   const admin_seller = async () => {
-    const res = await fetch("https://coopmart-backend.onrender.com/selleradmin", {
+    const res = await fetch(`${config.API_BASE_URL}/selleradmin`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -74,7 +75,7 @@ const Selleradmin = () => {
     let executed = false
     if (executed) { return }
     const interval = setInterval(async () => {
-      const res = await fetch("https://coopmart-backend.onrender.com/checking", {
+      const res = await fetch(`${config.API_BASE_URL}/checking`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: item._id }),

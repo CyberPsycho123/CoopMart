@@ -3,6 +3,7 @@ import "../CSS/Seller.css";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
+import config from "../../config";
 
 export default function Seller() {
   const [imagePreview, setImagePreview] = useState(null);
@@ -32,7 +33,7 @@ export default function Seller() {
 
   useEffect(() => {
     async function redirect() {
-      let reading = await fetch("https://coopmart-backend.onrender.com/read", { method: "GET", credentials: "include" })
+      let reading = await fetch(`${config.API_BASE_URL}/read`, { method: "GET", credentials: "include" })
       let reads = await reading.json()
       if (reads.bool == true) {
         navigate("/seller")
@@ -55,7 +56,7 @@ export default function Seller() {
     formData.append("price", form.price)
     formData.append("catagory", form.catagory)
 
-    const res = await fetch("https://coopmart-backend.onrender.com/sell", {
+    const res = await fetch(`${config.API_BASE_URL}/sell`, {
       method: "POST",
       credentials: "include",
       body: formData
@@ -112,10 +113,10 @@ export default function Seller() {
             <label>Category</label>
             <select name="catagory" {...register("catagory", { required: { value: true, message: "This field is required" } })}>
               <option>Select category</option>
-              <option>T-shirt</option>
-              <option>Shirt</option>
-              <option>Shoes</option>
+              <option>Accessories</option>
+              <option>Food</option>
               <option>Electronics</option>
+              <option>Others</option>
             </select>
           </div>
 

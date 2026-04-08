@@ -1,6 +1,7 @@
 import "../CSS/SellerDetails.css";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import config from "../../config";
 
 function SellerDetails() {
   const navigate = useNavigate()
@@ -11,7 +12,7 @@ function SellerDetails() {
     formState: { errors },
   } = useForm()
   const onsubmit = async (form) => {
-    const res = await fetch("https://coopmart-backend.onrender.com/sellerdetails", {
+    const res = await fetch(`${config.API_BASE_URL}/sellerdetails`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",

@@ -9,12 +9,12 @@ import Home from './compenents/JSX/Home'
 import Ordered from './compenents/JSX/Ordered'
 import Login from './compenents/JSX/Login'
 import Shop from './compenents/JSX/Shop'
-import Signup from './compenents/JSX/Signup'
 import SellerStart from './compenents/JSX/SellerStart'
 import Selleradmin from './compenents/JSX/Selleradmin'
 import Seller from './compenents/JSX/Seller'
 import Info from './compenents/JSX/Info'
 import Logout from './compenents/JSX/Logout'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Footer from './compenents/JSX/Footeer'
 import Order from './compenents/JSX/Order'
@@ -23,37 +23,54 @@ import Confirmed from './compenents/JSX/Confirmed'
 import SellerTerms from './compenents/JSX/SellerTerms'
 import Edit from './compenents/JSX/Edit'
 import { CounterContext } from './Context/context'
+import config from './config'
 
 function App() {
-  const [shoes, setShoes] = useState([]);
+
+  const GoogleAuthWapper = () => {
+    return (
+      <GoogleOAuthProvider clientId='1060914793989-ffhlhjob453iq5aiucjfejf6s3jafnt7.apps.googleusercontent.com'>
+        <Login />
+      </GoogleOAuthProvider>
+    )
+  }
+
+
+  const [Others, setOthers] = useState([]);
   const [electronics, setElectronics] = useState([]);
-  const [Tshirts, setTshirts] = useState([]);
-  const [Shirts, setShirts] = useState([]);
+  const [Accessories, setAccessories] = useState([]);
+  const [Food, setFood] = useState([]);
+  const [Allitems,setitems]=useState([])
   const [counter, setcount] = useState(0);
+  const [profile,setprofile]=useState(false)
   const [loading, setload] = useState(true)
 
   async function tool() {
 
-    let response = await fetch("https://coopmart-backend.onrender.com", {
+    let response = await fetch(`${config.API_BASE_URL}`, {
       method: "POST"
     });
     let data = await response.json();
-    const tshirtsArr = [];
-    const shirtsArr = [];
-    const shoesArr = [];
-    const electronicsArr = [];
+    const AccessoriesArr = [];
+    const FoodArr = [];
+    const ElectronicsArr = [];
+    const OthersArr = [];
+    const all_items=[];
 
     data.forEach(item => {
-      if (item.catagory === "T-shirt") tshirtsArr.push(item);
-      if (item.catagory === "Shirt") shirtsArr.push(item);
-      if (item.catagory === "Electronics") electronicsArr.push(item);
-      if (item.catagory === "Shoes") shoesArr.push(item);
+      if (item.catagory === "Accessories") AccessoriesArr.push(item);
+      if (item.catagory === "Food") FoodArr.push(item);
+      if (item.catagory === "Electronics") ElectronicsArr.push(item);
+      if (item.catagory === "Others") OthersArr.push(item);
+      all_items.push(item)
+      console.log(item)
     });
 
-    setTshirts(tshirtsArr);
-    setShirts(shirtsArr);
-    setShoes(shoesArr);
-    setElectronics(electronicsArr);
+    setOthers(OthersArr)
+    setElectronics(ElectronicsArr)
+    setAccessories(AccessoriesArr)
+    setFood(FoodArr)
+    setitems(all_items)
 
   }
 
@@ -77,7 +94,7 @@ function App() {
   useEffect(() => {
     const interval = setInterval(async () => {
       try {
-        const res = await fetch("https://coopmart-backend.onrender.com/health", { method: "GET" });
+        const res = await fetch(`${config.API_BASE_URL}/health`, { method: "GET" });
         if (res.ok) {
           setload(false)
           await tool();
@@ -95,11 +112,11 @@ function App() {
   const Router = createBrowserRouter([
     {
       path: "/",
-      element: <Layout loading={loading}><Home /></Layout>
+      element: <Layout loading={loading}><Home Products={Allitems.slice().reverse().slice(0,4)}/></Layout>
     },
     {
       path: "/shop",
-      element: <Layout loading={loading}><Shop Tshirts={Tshirts} Shirts={Shirts} shoes={shoes} electronics={electronics} /></Layout>
+      element: <Layout loading={loading}><Shop accessories={Accessories} others={Others} food={Food} electronics={electronics} /></Layout>
     },
     {
       path: "/about",
@@ -111,15 +128,11 @@ function App() {
     },
     {
       path: "/login",
-      element: <Layout loading={loading}><Login /></Layout>
+      element: <Layout loading={loading}><GoogleAuthWapper /></Layout>
     },
     {
-      path: "/Signup",
-      element: <Layout loading={loading}><Signup /></Layout>
-    },
-    {
-      path: "/order/:catagory/:orderitem",
-      element: <Layout loading={loading}><Order Tshirts={Tshirts} Shirts={Shirts} shoes={shoes} electronics={electronics} /></Layout>
+      path: "/order/:orderitem",
+      element: <Layout loading={loading}><Order Products={Allitems} /></Layout>
     },
     {
       path: "/ordered",
@@ -171,7 +184,7 @@ function App() {
     }
   ])
   return (
-    <CounterContext.Provider value={{ counter, setcount }}>
+    <CounterContext.Provider value={{ counter, setcount,profile,setprofile }}>
       <RouterProvider router={Router} />
     </CounterContext.Provider>
   )

@@ -1,11 +1,7 @@
 import express from 'express';
-import fs from 'fs';
-import path from 'path';
 import cors from 'cors';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
 import { Cart } from './models/cart.js';
-import { fileURLToPath } from 'url';
 import { Outfit } from './models/outfit.js';
 import { User } from './models/user.js';
 import { Seller } from './models/seller.js';
@@ -17,6 +13,7 @@ import dotenv from "dotenv";
 import { v2 as cloudinary } from 'cloudinary';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import multer from 'multer';
+import { google } from 'googleapis';
 
 dotenv.config();
 
@@ -47,7 +44,6 @@ const connectDB = async () => {
 connectDB();
 
 
-const __filename = fileURLToPath(import.meta.url);
 const secretKey = process.env.JWT_SECRET;
 
 const app = express();
@@ -56,7 +52,7 @@ const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors({
-  origin: "https://coopmart-frontend.onrender.com",
+  origin: "http://localhost:5173",
   credentials: true
 }));
 
@@ -67,6 +63,7 @@ async function Items() {
   const items = await Outfit.find();
 
   return items.map(item => ({
+    id:item._id,
     email: item.email,
     catagory: item.catagory,
     title: item.title,
@@ -113,40 +110,55 @@ app.post('/sell', upload.single("image"), async (req, res) => {
   res.json({ success: true });
 });
 
-
-// User registration
-app.post('/create', (req, res) => {
-  let { username, email, password } = req.body;
-  bcrypt.genSalt(10, (err, salt) => {
-    bcrypt.hash(password, salt, async (err, hash) => {
-      let created_user = await User.create({ username, email, password: hash });
-      let token = jwt.sign({ email }, secretKey, { expiresIn: '7d' });
-      res.cookie("email", email, { maxAge: 1000 * 60 * 60 * 24 * 7, httpOnly: true, secure: true, sameSite: "none" });
-      res.cookie("token", token, { maxAge: 1000 * 60 * 60 * 24 * 7, httpOnly: true, secure: true, sameSite: "none" });
-      res.send(created_user);
-    });
-  });
-});
-
-// User login
 app.post('/login', async (req, res) => {
-  let user = await User.findOne({ email: req.body.email });
-  if (!user) {
-    return res.send({ message: "User is failed" });
-  }
-  bcrypt.compare(req.body.password, user.password, (err, result) => {
-    if (result) {
-      let token = jwt.sign({ email: user.email }, secretKey, { expiresIn: '7d' });
-      res.cookie("token", token, { maxAge: 1000 * 60 * 60 * 24 * 7, httpOnly: true, secure: true, sameSite: "none" });
-      res.cookie("email", user.email, { maxAge: 1000 * 60 * 60 * 24 * 7, httpOnly: true, secure: true, sameSite: "none" });
-      res.json({ message: "Login successful", bool: true });
-    } else {
-      res.json({ message: "Password is incorrect" });
-    }
-  });
-});
+  const { authResult } = req.body
+  const code = authResult.code
+  const oauth2Client = new google.auth.OAuth2(
+    process.env.CLIENT_ID,
+    process.env.CLIENT_SECRET,
+    "postmessage"
+  );
+  const googleres = await oauth2Client.getToken(code)
+  oauth2Client.setCredentials(googleres.tokens)
 
-// Logout
+  const userRes = await fetch(
+    `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${googleres.tokens.access_token}`
+  )
+
+  const { email, name} = await userRes.json()
+
+
+  const check_email = await User.findOne({ email: email })
+  if (check_email) {
+    const token = jwt.sign({ email: email }, secretKey, { expiresIn: '7d' });
+    res.cookie("token", token, { maxAge: 1000 * 60 * 60 * 24 * 7, httpOnly: true, secure: true, sameSite: "none" });
+    res.cookie("email", email, { maxAge: 1000 * 60 * 60 * 24 * 7, httpOnly: true, secure: true, sameSite: "none" });
+    res.json({ success: true })
+  }
+  else {
+    const make_channel = new User({username:name ,email: email})
+    make_channel.save()
+    const token = jwt.sign({ email: email }, secretKey, { expiresIn: '7d' });
+    res.cookie("token", token, {
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      path: "/"
+    });
+    res.cookie("email", email, {
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      path: "/"
+    });
+    res.json({ success: true })
+  }
+})
+
+
+
 app.post('/logout', (req, res) => {
   res.clearCookie("token", {
     secure: true,
@@ -157,7 +169,7 @@ app.post('/logout', (req, res) => {
     sameSite: "none"
   });
 
-  res.json({ message: "Logged out" });
+  res.json({success:true});
 });
 
 // Check login status

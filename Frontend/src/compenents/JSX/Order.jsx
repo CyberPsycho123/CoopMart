@@ -3,31 +3,26 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useContext } from "react";
 import { CounterContext } from "../../Context/context";
+import config from "../../config";
 
 
-const Order = ({ Tshirts, Shirts, shoes, electronics }) => {
+const Order = ({ Products }) => {
     const [qty, setqty] = useState(1)
     const params = useParams()
     const navigate = useNavigate()
     const value = useContext(CounterContext)
-    const index = Number(params.orderitem);
-    const [outfits, setoutfit] = useState(Tshirts)
-    useEffect(() => {
-        if (params.catagory == "Tshirts") {
-            setoutfit(Tshirts)
-        }
-        else if (params.catagory == "Shirts") {
-            setoutfit(Shirts)
-        }
-        else if (params.catagory == "shoes") {
-            setoutfit(shoes)
-        }
-        else if (params.catagory == "electronics") {
-            setoutfit(electronics)
-        }
-    }, [params.catagory, Tshirts, Shirts, shoes, electronics])
+    const index = params.orderitem
+    const outfits = Products
+    const [item, setitem] = useState(outfits[0].id);
 
-    const item = outfits[index];
+    useEffect(() => {
+        const foundItem = Products.find(product => product.id == index);
+        if (foundItem) {
+            setitem(foundItem);
+        }
+    }, [index, Products]);
+
+
     const price = item.price;
 
     const total_price = price * qty
@@ -41,7 +36,7 @@ const Order = ({ Tshirts, Shirts, shoes, electronics }) => {
             price: total_price
         };
 
-        const response = await fetch("https://coopmart-backend.onrender.com/cart", {
+        const response = await fetch(`${config.API_BASE_URL}/cart`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
@@ -63,7 +58,7 @@ const Order = ({ Tshirts, Shirts, shoes, electronics }) => {
             quantity: qty,
             price: total_price
         }
-        let res = await fetch("https://coopmart-backend.onrender.com/ordered", {
+        let res = await fetch(`${config.API_BASE_URL}/ordered`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",

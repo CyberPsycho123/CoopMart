@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import "../CSS/Confirm.css";
 import { useEffect, useState } from "react";
+import config from "../../config";
 
 const Confirm = () => {
   const navigate = useNavigate();
@@ -9,7 +10,7 @@ const Confirm = () => {
 
   useEffect(() => {
     async function CONFIRM() {
-      let a = await fetch("https://coopmart-backend.onrender.com/readdetail",
+      let a = await fetch(`${config.API_BASE_URL}/readdetail`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -28,7 +29,7 @@ const Confirm = () => {
 
   useEffect(() => {
     async function prices() {
-      let a = await fetch("https://coopmart-backend.onrender.com/last-order",
+      let a = await fetch(`${config.API_BASE_URL}/last-order`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

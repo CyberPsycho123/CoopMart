@@ -1,78 +1,69 @@
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import "../CSS/Login.css";
+import '../CSS/Login.css'
+import { useGoogleLogin } from '@react-oauth/google'
 import { useNavigate } from "react-router-dom";
+import config from '../../config';
+import { useContext } from 'react';
+import { CounterContext } from '../../Context/context';
 
-export default function Login() {
-  const navigate = useNavigate();
-  const [exist, setexist] = useState(true)
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-  function handleChange(e) {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  }
+const Login = () => {
+    const Counter=useContext(CounterContext)
+    const navigate = useNavigate()
+    const responsegoogle = async (authResult) => {
+        try {
+            const res = await fetch(`${config.API_BASE_URL}/login`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: 'include',
+                body: JSON.stringify({ authResult: authResult })
+            })
+            const response = await res.json()
+            if (response.success == true) {
+                Counter.setprofile(true)
+                navigate('/')
+            }
+        } catch (err) {
+            console.error("Error while requesting to google", err)
+        }
+    }
 
-
-  const delay = (d) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve()
-      }, d * 1000)
+    const googlelogin = useGoogleLogin({
+        onSuccess: responsegoogle,
+        onError: responsegoogle,
+        flow: 'auth-code'
     })
-  }
+    return (
+        <>
+            <div className="login-page">
+                <div className="login-card">
+                    <img
+                        src="/vite.svg"
+                        alt="platform"
+                        className="google-logo"
+                    />
 
-  async function handleSubmit(e) {
-    e.preventDefault();
+                    <h1>Login</h1>
+                    <p className="subtitle">
+                        Use your Google account to continue
+                    </p>
 
-    const res = await fetch("https://coopmart-backend.onrender.com/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify(formData)
-    });
+                    <button className="google-btn" onClick={googlelogin}>
+                        <img
+                            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                            alt="G"
+                        />
+                        Sign in with Google
+                    </button>
 
-    const data = await res.json();
-    if (data.bool == true) {
-      navigate("/shop")
-    }
-    else {
-      setexist(false)
-      await delay(2)
-      setexist(true)
-    }
-  }
-  return (
-
-    <div className="login-wrapper">
-      <div className="login-box">
-
-        <h2 className="title" style={{ color: "black" }}>Login</h2>
-
-        <form className="login-form" onSubmit={handleSubmit}>
-
-          <div className="input-group">
-            <label>Email</label>
-            <input type="email" name="email" placeholder="Enter your email" onChange={handleChange} />
-          </div>
-
-          <div className="input-group">
-            <label>Password</label>
-            <input type="password" name="password" placeholder="Enter your password" onChange={handleChange} />
-          </div>
-
-          <a href="#" className="forgot">Forgot password?</a>
-          {!exist && <p style={{ color: "red" }}>This account doesnt created !</p>}
-          <button className="login-btn">Login</button>
-
-          <p className="signup-text">
-            Don’t have an account? <Link to='/signup'>Sign Up</Link>
-          </p>
-
-        </form>
-
-      </div>
-    </div>
-  );
+                    <p className="footer-text">
+                        By continuing, you agree to our
+                        <span onClick={()=>window.open("https://policies.google.com/terms", "_blank", "noopener,noreferrer")}> Terms</span> and <span onClick={()=>window.open("https://policies.google.com/privacy", "_blank", "noopener,noreferrer")}>Privacy Policy</span>
+                    </p>
+                </div>
+            </div>
+        </>
+    )
 }
+
+export default Login

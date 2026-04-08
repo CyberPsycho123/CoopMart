@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "../CSS/Ordered.css";
 import { useNavigate } from "react-router-dom";
+import config from "../../config";
 
 const Ordered = () => {
   const navigate = useNavigate()
   const [orders,setorder] = useState([])
   useEffect(() => {
     async function read() {
-      let reading = await fetch("https://coopmart-backend.onrender.com/read", { method: "POST", credentials: "include" })
+      let reading = await fetch(`${config.API_BASE_URL}/read`, { method: "POST", credentials: "include" })
       let reads = await reading.json()
       if (reads.bool == true) {
         navigate("/ordered")
@@ -17,7 +18,7 @@ const Ordered = () => {
       }
     }
     async function saveorder() {
-      let saving = await fetch("https://coopmart-backend.onrender.com/saveorder",
+      let saving = await fetch(`${config.API_BASE_URL}/saveorder`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

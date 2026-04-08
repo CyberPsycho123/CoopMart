@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import "../CSS/Carts.css";
 import { useEffect, useState, useContext } from "react";
 import { CounterContext } from "../../Context/context";
+import config from "../../config";
+
 export default function Carts() {
   const navigate = useNavigate();
   const value = useContext(CounterContext)
@@ -21,7 +23,7 @@ export default function Carts() {
     if (executed){return}
 
     const interval = setInterval(async () => {
-      let item = await fetch("https://coopmart-backend.onrender.com/delcart",
+      let item = await fetch(`${config.API_BASE_URL}/delcart`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -42,7 +44,7 @@ export default function Carts() {
     if(value.counter == 0){
       return
     }
-    const res = await fetch("https://coopmart-backend.onrender.com/check", {
+    const res = await fetch(`${config.API_BASE_URL}/check`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -57,7 +59,7 @@ export default function Carts() {
 
   useEffect(() => {
     async function loaded() {
-      let cart_item = await fetch("https://coopmart-backend.onrender.com/loaded", { method: "POST", credentials: "include" })
+      let cart_item = await fetch(`${config.API_BASE_URL}/loaded`, { method: "POST", credentials: "include" })
       let cart_items = await cart_item.json()
       let cart_main = cart_items.carts
       setlen(cart_items.len)
@@ -66,7 +68,7 @@ export default function Carts() {
     }
 
     async function read() {
-      let reading = await fetch("https://coopmart-backend.onrender.com/read", { method: "POST", credentials: "include" })
+      let reading = await fetch(`${config.API_BASE_URL}/read`, { method: "POST", credentials: "include" })
       let reads = await reading.json()
       if (reads.bool == true) {
         navigate("/cart")

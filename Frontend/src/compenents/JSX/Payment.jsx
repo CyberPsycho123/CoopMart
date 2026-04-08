@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../CSS/Payment.css";
+import config from "../../config";
 
 const Payment = () => {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ const Payment = () => {
   const delivar = async (method_del) => {
     const updatedOrder = { ...order, method: method_del };
     setorder(updatedOrder);
-    let res = await fetch("https://coopmart-backend.onrender.com/delivary", {
+    let res = await fetch(`${config.API_BASE_URL}/delivary`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -21,7 +22,7 @@ const Payment = () => {
 
   useEffect(() => {
     const lastorder = async () => {
-      let a = await fetch("https://coopmart-backend.onrender.com/last-order", {
+      let a = await fetch(`${config.API_BASE_URL}/last-order`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
       });
