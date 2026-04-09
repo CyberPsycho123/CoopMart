@@ -63,12 +63,12 @@ const Shop = ({ accessories, others, food, electronics }) => {
 
       <section className="category-section">
         <br />
-        {filteredElectronics.length > 0 && <h2>Electronics</h2>}
+        {filteredElectronics.length > 0 && <h2 style={{color:'white'}}>Electronics</h2>}
         <div className="product-grid">
           {filteredElectronics.reverse().map((item, index) => (
             <div key={index} className="product-card">
               <img src={item.image} alt={item.name} />
-              <h3 className="left">{item.title}</h3>
+              <h3 className="left" style={{color:'black'}}>{item.title}</h3>
               <br />
               <p className="left">₹{item.price}</p>
               <br />
@@ -80,12 +80,12 @@ const Shop = ({ accessories, others, food, electronics }) => {
 
 
       <section className="category-section">
-        {filteredaccessories.length > 0 && <h2>Accessories</h2>}
+        {filteredaccessories.length > 0 && <h2 style={{color:'white'}}>Accessories</h2>}
         <div className="product-grid">
           {filteredaccessories.reverse().map((item, index) => (
             <div key={index} className="product-card">
               <img src={item.image} alt={item.title} />
-              <h3 className="left">{item.title}</h3>
+              <h3 className="left" style={{color:'black'}}>{item.title}</h3>
               <br />
               <p className="left">₹{item.price}</p>
               <br />
@@ -97,12 +97,12 @@ const Shop = ({ accessories, others, food, electronics }) => {
 
 
       <section className="category-section">
-        {filteredfood.length > 0 && <h2>Food items</h2>}
+        {filteredfood.length > 0 && <h2 style={{color:'white'}}>Food items</h2>}
         <div className="product-grid">
           {filteredfood.reverse().map((item, index) => (
             <div key={index} className="product-card">
               <img src={item.image} alt={item.title} />
-              <h3 className="left">{item.title}</h3>
+              <h3 className="left" style={{color:'black'}}>{item.title}</h3>
               <br />
               <p className="left">₹{item.price}</p>
               <br />
@@ -115,12 +115,12 @@ const Shop = ({ accessories, others, food, electronics }) => {
 
 
       <section className="category-section">
-        {filteredothers.length > 0 && <h2>Others</h2>}
+        {filteredothers.length > 0 && <h2 style={{color:'white'}}>Others</h2>}
         <div className="product-grid">
           {filteredothers.reverse().map((item, index) => (
             <div key={index} className="product-card">
               <img src={item.image} alt={item.title} />
-              <h3 className="left">{item.title}</h3>
+              <h3 className="left" style={{color:'black'}}>{item.title}</h3>
               <br />
               <p className="left">₹{item.price}</p>
               <br />

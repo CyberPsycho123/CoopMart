@@ -17,6 +17,7 @@ import Logout from './compenents/JSX/Logout'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Footer from './compenents/JSX/Footeer'
+import Page404 from './compenents/JSX/Page404'
 import Order from './compenents/JSX/Order'
 import Confirm from './compenents/JSX/Confirm'
 import Confirmed from './compenents/JSX/Confirmed'
@@ -81,7 +82,7 @@ function App() {
         {loading ? (
           <div className='container' style={{ height: '80vh' }}>
             <div className="spinner"></div>
-            <p>Waiting for server...</p>
+            <p style={{color:'white'}}>Waiting for server...</p>
           </div>
         ) : (
           <main>{children}</main>
@@ -181,6 +182,10 @@ function App() {
     {
       path: "/selleradmin",
       element: <Layout loading={loading}><Selleradmin /></Layout>
+    },
+    {
+      path:"*",
+      element:<><Page404/></>
     }
   ])
   return (

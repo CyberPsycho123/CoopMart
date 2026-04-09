@@ -37,7 +37,7 @@ function SellerStart() {
   return (
     <div className="seller-page">
       <div className="glass-card">
-        <h1 className="title">
+        <h1 className="title" style={{fontFamily:'sans-serif'}}>
           Do you want to start as a <span>Seller</span>?
         </h1>
 

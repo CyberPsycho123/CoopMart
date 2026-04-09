@@ -85,9 +85,9 @@ export default function Carts() {
       <div className="cart-container">
 
         <div className="cart-left">
-          <h2 className="cart-title">Shopping Cart</h2>
+          <h2 className="cart-title" style={{color:'black'}}>Shopping Cart</h2>
           <br />
-          <span className="items-count">{len} Items</span>
+          <span className="items-count" style={{color:'black'}}>{len} Items</span>
 
           <div className="cart-items">
             {[...Cart_items].reverse().map((items, index) => {
@@ -95,16 +95,16 @@ export default function Carts() {
                 <div className="cart-item">
                   <img src={items.image} />
                   <div className="item-info">
-                    <h4>{items.title}</h4>
+                    <h4 style={{color:'black'}}>{items.title}</h4>
                     <button className="remove-btn" onClick={() => Remove(index)}>Remove</button>
                   </div>
 
                   <div className="qty">
-                    <span style={{ padding: '3px', textAlign: 'center', border: '1px solid black', width: '60px' }}>{items.quantity}</span>
+                    <span style={{ padding: '3px', textAlign: 'center', border: '1px solid black', width: '60px',color:'black' }}>{items.quantity}</span>
                   </div>
 
                   <div className="price">₹{items.price}</div>
-                  <div className="total">₹{items.price}</div>
+                  <div className="total" style={{color:'black'}}>₹{items.price}</div>
                 </div>
               )
             })}
@@ -116,12 +116,12 @@ export default function Carts() {
         {/* RIGHT — PAYMENT SUMMARY */}
         <div className="cart-right">
           <br />
-          <h3>Order Summary</h3>
+          <h3 style={{color:'black'}}>Order Summary</h3>
           <br />
           <div className="summary-row total-row">
-            <span>Total Cost</span>
+            <span style={{color:'black'}}>Total Cost</span>
             <br />
-            <strong>₹{Cart_price}</strong>
+            <strong style={{color:'black'}}>₹{Cart_price}</strong>
           </div>
           <br />
           <br />

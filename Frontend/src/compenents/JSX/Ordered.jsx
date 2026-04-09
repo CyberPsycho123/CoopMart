@@ -42,7 +42,7 @@ const Ordered = () => {
 
   return (
     <section className="ordered-container">
-      <h2 className="ordered-title">Ordered Items</h2>
+      <h2 className="ordered-title" style={{color:'white'}}>Ordered Items</h2>
 
       <div className="ordered-top">
         <div className="search-box">
@@ -54,12 +54,12 @@ const Ordered = () => {
           />
         </div>
 
-        <div className="item-count">
+        <div className="item-count" style={{color:'white'}}>
           {filtered.length} Item(s)
         </div>
       </div>
 
-      <div className="ordered-header">
+      <div className="ordered-header" style={{color:'white'}}>
         <span>Order</span>
         <span>Price</span>
         <span>Qty</span>
@@ -72,15 +72,15 @@ const Ordered = () => {
               <img src={item.prod_img} alt={item.prod_title} />
 
               <div className="details">
-                <h3>{item.prod_title}</h3>
+                <h3 style={{color:'white'}}>{item.prod_title}</h3>
               </div>
             </div>
 
-            <div className="ordered-price">
+            <div className="ordered-price" style={{color:'white'}}>
               {item.delivary_method === "Cash on delivary" ? item.price:<del>{item.price}</del>}
             </div>
 
-            <div className="ordered-qty">
+            <div className="ordered-qty" style={{color:'white'}}>
               {item.prod_quantity}
             </div>
           </div>

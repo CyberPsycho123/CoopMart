@@ -127,12 +127,12 @@ const Home = ({ Products }) => {
       <div className="shop-container">
         <section className="category-section">
           <br />
-          <h2>Latest Products</h2>
+          <h2 style={{color:'white'}}>Latest Products</h2>
           <div className="product-grid">
             {Products.map((item) => (
               <div key={item._id} className="product-card">
                 <img src={item.image} alt={item.name} />
-                <h3 className="left">{item.title}</h3>
+                <h3 className="left" style={{color:'black'}}>{item.title}</h3>
                 <br />
                 <p className="left">₹{item.price}</p>
                 <br />
